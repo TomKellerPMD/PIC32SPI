@@ -1,0 +1,55 @@
+build/default/production/_ext/1074706855/PMDpic32SPI.o:  \
+ ../PIC32Redux/PIC32Redux.X/C-Motion/C/PMDpic32SPI.c  \
+ C-Motion/Include/PMDtypes.h  \
+C-Motion/Include/PMDecode.h  \
+ C-Motion/Include/PMDdevice.h  \
+C-Motion/Include/PMDtypes.h  \
+ C-Motion/Include/PMDpic32SPI.h  \
+C-Motion/Include/PMDsys.h  \
+DBPrint.h  \
+ PIC32Libs/framework/peripheral/spi/plib_spi.h  \
+ PIC32Libs/framework/peripheral/spi/processor/spi_processor.h  \
+ PIC32Libs/framework/peripheral/spi/processor/spi_p32xxxx.h  \
+ PIC32Libs/framework/peripheral/spi/processor/spi_p32mz2048efm100.h  \
+ PIC32Libs/framework/peripheral/peripheral_common_32bit.h  \
+ PIC32Libs/framework/peripheral/peripheral_common.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_EnableControl_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_registers.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_StopInIdle_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_ReceiverOverflow_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_TransmitBufferFullStatus_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_TransmitBufferEmptyStatus_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_ReceiveBufferStatus_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_PinControl_PIC32.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_CommunicationWidth_PIC32.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_AudioCommunicationWidth_PIC32.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_InputSamplePhase_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_OutputDataPhase_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_ClockPolarity_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_MasterControl_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_BaudRate_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_BusStatus_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_ReadDataSignStatus_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_SlaveSelectControl_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_TransmitUnderRunStatus_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FIFOControl_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FIFOCount_PIC32.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_ReceiveFIFOStatus_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FIFOShiftRegisterEmptyStatus_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FIFOInterruptMode_PIC32.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FramedCommunication_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FrameSyncPulseDirection_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FrameSyncPulsePolarity_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FrameSyncPulseEdge_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FrameSyncPulseWidth_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FrameSyncPulseCounter_PIC32.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_FrameErrorStatus_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_Buffer_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_BaudRateClock_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_ErrorInterruptControl_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_AudioErrorControl_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_AudioProtocolControl_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_AudioTransmitMode_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_AudioProtocolMode_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_Buffer32bit_Default.h  \
+ PIC32Libs/framework/peripheral/spi/processor/../templates/spi_Buffer16bit_Default.h 
