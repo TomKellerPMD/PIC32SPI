@@ -292,6 +292,8 @@ PMDresult PMDSPI_Send(void* transport_data, PMDuint8 xCt, PMDuint16* xDat, PMDui
         
     }
     
+ //   Sleep(75);
+    
     // Ready to send a command
 	nwords = nbytes / 2;
 	PMDSPI_WriteWords(transport_data, WriteData, nwords, ReadData);
@@ -303,7 +305,7 @@ PMDresult PMDSPI_Send(void* transport_data, PMDuint8 xCt, PMDuint16* xDat, PMDui
 		PMDSPI_WriteWords(transport_data, WriteData, nwords, ReadData);
 	}
 
-    Sleep(800);
+  //  Sleep(75);
 	result=WaitUntilReady(SPI_transport_data);
     if(result) return result;
     	
