@@ -17,6 +17,9 @@
 //    GND
 
 
+#define RAAD
+/// means SPIEnable for Axis 0 is RPG0
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -83,7 +86,7 @@ PMDresult PMDSPI_Close(void* transport_data)
 }
 
 // Set up default configuration for SPI port
-void PMDSPI_InitData(PMDSPI_IOData* transport_data)
+void PMDSPI_InitData(PMDSPI_IOData* transport_data, int device)
 {
     transport_data->m_Handle = INVALID_HANDLE_VALUE;
     transport_data->m_bUseScript = FALSE;
@@ -92,8 +95,8 @@ void PMDSPI_InitData(PMDSPI_IOData* transport_data)
     transport_data->ClockPhase = 1; //kNi845xSpiClockPhaseSecondEdge;
     transport_data->ClockPhaseRead = transport_data->ClockPhase;
     transport_data->ClockPolarity = 1; //kNi845xSpiClockPolarityIdleLow;
-    transport_data->ClockRate = 10000;
-    transport_data->ChipSelect = 0;
+    transport_data->ClockRate = 6000;
+    transport_data->ChipSelect = device;
     transport_data->ResourceName[0] = 0;
     transport_data->bVerbose = 0;
     
@@ -107,7 +110,11 @@ PMDuint16 PMDSPI_InitPort(PMDSPI_IOData* transport_data, int device)
 {
     int rData;
     int clk;
+//#ifdef RAAD    
+//    clk=1200/transport_data->ClockRate;
+//#else    
     clk=40000/transport_data->ClockRate;
+//#endif
     
     IEC0CLR=0x03800000;    // disable all interrupts
     SPI1CON = 0;           // Stops and resets the SPI1. 
@@ -119,39 +126,106 @@ PMDuint16 PMDSPI_InitPort(PMDSPI_IOData* transport_data, int device)
     
     SPI1BRG=clk;           // use FPB/4 clock frequency
     SPI1STATCLR=0x40;      // clear the Overflow
+ 
+    switch (device)
+    {
+        case 0:
+            
+            // Configure Enable_0
+            SPI_ENB_0|=SPI_ENB_MSK_0;   // set Enable low
+            TRIS_ENB_0&=~SPI_ENB_MSK_0; // set Enable as output
+            ANSEL_ENB_0&=~SPI_ENB_MSK_0;// set Enable pin as digital
+            
+            //Configure Status_0
+            ANSEL_STAT_0&=~SPI_STAT_MSK_0;   // Set Status as digital
+            
+            //Configure SDO1
+            TRIS_SDO1_0&=~SDO1_MSK;     // set SDO1 as output
+            SDO1_REG=5;                 // set RPD3 to function as SDO1 
+            
+            //Configure SDI1
+            ANSEL_SDI1&=~SDI1_MSK;     //set RPD14 as digital
+            SDI1R=0xB;  // specify SDI1 mapping to RPD14 
     
-    // Using RA9 as a digital input for HostSPIStatus
-    //  Default to analog input so change to digital.
-    ANSELA&=0xFDFF;
+            break;
     
-    // Deassert HostSPIEnable (RPD4)
-    PORTD|=0x0010;
-        
-    //SS1/RPD4 and SDO1/RPD3 are outputs
-    TRISD&=0xFFE7;
+        case 1:
+            
+            // USse RB13 for SPIStatus Axis1
+            ANSELB&=0xDFFF; 
+            // Deassert HostSPIEnable (RPG0)  for Axis1
+            PORTG|=0x0001;
     
-    RPD3R=5;    // specify function of RPD3 as SDO1
-    
-    ANSELD&=0xBFFF;
-    SDI1R=0xB;  // specify SDI1 mapping to RPD14 
+            //SS1/RPD4 and SDO1/RPD3 are outputs
+            TRISG&=0xFFFE;
      
+            break;
+    }
+
     SPI1CON=0x8620;        // SPI ON, 16 bits transfer, SMP=1, Master mode
     // from now on, the device is ready to transmit and receive data
    
     transport_data->m_Handle = 1;
     
-    
     // init output used for debugging  PA1
     ANSELA&=0xFFFD;
     TRISA&=0xFFFD;
     PORTA&=0xFFFD;   //set PA1 low
-    
-          
-  
+     
     return PMD_ERR_OK;
 }
 
-// HostSPIEnable is connected to D4
+// HostSPIEnable is connected to D4  (or G1 on Raad board)
+#ifdef RAAD
+void AssertHostSPIEnable(PMDSPI_IOData* transport_data)
+{
+    switch (transport_data->ChipSelect)
+    {
+        case 0: 
+            SPI_ENB_0=~SPI_ENB_MSK_0;
+            break;
+        case 1:
+            SPI_ENB_1=~SPI_ENB_MSK_1;
+            break;
+    }
+    return;
+ } 
+
+void DeAssertHostSPIEnable(PMDSPI_IOData* transport_data)
+{
+    switch (transport_data->ChipSelect)
+    {
+        case 0:
+            SPI_ENB_0|=SPI_ENB_MSK_0;
+            break;
+        case 1:
+            SPI_ENB_1|=SPI_ENB_MSK_1;
+            break;
+    }
+    return;
+}
+
+int GetHostSPIStatus(PMDSPI_IOData* transport_data)
+{
+
+    int status;
+    switch (transport_data->ChipSelect)
+    {
+        case 0:
+            status=SPI_STAT_0&SPI_STAT_MSK_0;
+            break;
+        case 1:
+            status=SPI_STAT_1&SPI_STAT_MSK_1;
+            break;
+    }
+    return status;
+    
+    
+}
+
+
+
+#else
 void AssertHostSPIEnable()
 {
      PORTD&=0xFFEF;
@@ -162,18 +236,21 @@ void DeAssertHostSPIEnable()
      PORTD|=0x0010;
 }
 
-
-// HostSPIStatus is connected to RA9
+// HostSPIStatus is connected to RA9( or RB12 on Raad board)
 int GetHostSPIStatus(PMDSPI_IOData* transport_data)
 {
-   return PORTA&0x200;
     
+     return PORTA&0x200;
+   
 }
 
+#endif
 
 int WaitUntilReady(PMDSPI_IOData* transport_data)
 {
     
+    int temp;
+    temp=GetHostSPIStatus(transport_data);
     ResetTimer();  //to ensure no rollover
     unsigned long EndTime = GetTickCount() + transport_data->m_Timeout;
     do {
@@ -387,7 +464,7 @@ PMDresult PMDSPI_WriteWords(void* transport_data, PMDuint16 *WriteData, int nwor
         temp&=0x0001;
     } 
     
-    AssertHostSPIEnable();
+    AssertHostSPIEnable(transport_data);
     
     for(i=0;i<nwords;i++)
     {
@@ -403,8 +480,7 @@ PMDresult PMDSPI_WriteWords(void* transport_data, PMDuint16 *WriteData, int nwor
         temp=0;
         while(!temp)
         {
-            temp=SPI1STAT;
-            temp&=0x0001;
+            temp=SPI1STAT;            temp&=0x0001;
         } 
     
         data=SPI1BUF;
@@ -412,7 +488,7 @@ PMDresult PMDSPI_WriteWords(void* transport_data, PMDuint16 *WriteData, int nwor
         rxbuff[2*i+1]=data>>8;
     }
      
-    DeAssertHostSPIEnable();
+    DeAssertHostSPIEnable(transport_data);
 	if (ret >= 0 && ReadData)
 	{
 		// do not Byte swap read data
@@ -469,7 +545,7 @@ PMDresult PMDSetupAxisInterface_SPI(PMDAxisHandle* axis_handle,PMDAxis axis_numb
     axis_handle->InterfaceType = InterfaceSPI;
 
     // the transport data is initialized first to setup the defaults
-    PMDSPI_InitData(transport_data);
+    PMDSPI_InitData(transport_data,device);
 
     axis_handle->transport_data = (void*) transport_data;
 

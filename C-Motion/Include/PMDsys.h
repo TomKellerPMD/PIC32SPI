@@ -35,7 +35,8 @@
 #define PMDputs                   puts
 
 //#define PMDprintf(void) void
-#define PMDprintf                 myprintf
+#define PMDprintf noprintf
+//#define PMDprintf                 myprintf
 
 #define PMDsprintf                sprintf
 #define PMDTaskWait(ms)           Sleep(ms*1000)
@@ -60,6 +61,15 @@ void ControlLED4(int color);
 void InitLED(void);
 
 #define TIME_SCALE 12.400
+
+#define OFF 0
+#define RED 1
+#define GREEN 2
+#define BLUE 3
+#define PURPLE 4
+#define YELLOW 5
+#define CYAN 6
+#define WHITE 7
 
 
 

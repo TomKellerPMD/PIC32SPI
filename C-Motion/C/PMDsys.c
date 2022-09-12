@@ -46,18 +46,22 @@ void Sleep(int us)
 //****************************************************************
 // ControlLED4(color)
 // encoding for "color" argument
-// 0 off
-// 1 red
-// 2 green
-// 3 blue
-// 4 purple
-//
+//#define OFF 0
+//#define RED 1
+//#define GREEN 2
+//#define BLUE 3
+//#define PURPLE 4
+//#define YELLOW 5
+//#define CYAN 6
+//#define WHITE 7
+
 // On the Curiosity PIC32MZEF board LED4 is a 3 channel RGB LED.
 //LED4 red RPB5
 //LED4 green RPB1
 //LED4 blue RPB0
 //active low
 //
+
 void ControlLED4(int color)
 {
     switch (color)
@@ -86,6 +90,22 @@ void ControlLED4(int color)
             LATBCLR=0x0021;
              break;
         
+        case 5:     //yellow
+            LATBSET=0x0001;
+            LATBCLR=0x0022;
+             break;
+        
+        case 6:     //cyan
+            LATBSET=0x0020;
+            LATBCLR=0x0003;
+             break;
+             
+        case 7:     //white
+            LATBSET=0x0000;
+            LATBCLR=0x0023;
+             break;
+             
+             
         default:
             break;
     }

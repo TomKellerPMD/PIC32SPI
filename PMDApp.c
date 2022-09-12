@@ -31,7 +31,7 @@ int main()
     // see ControlLED4 in PMDsys.c
     InitLED4();
     
-	PMDSetupAxisInterface_SPI(&hAxis1, PMDAxis1, 0);
+	result=PMDSetupAxisInterface_SPI(&hAxis1, PMDAxis1, 0);
     if(result)
 	{
 		printf("Error:Could not open serial port code=%x\n",result);

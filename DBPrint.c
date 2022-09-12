@@ -35,6 +35,10 @@ void InitDBPrintf(void)
     return;   
 }
 
+void noprintf(char* format, ...)
+{
+    return;
+}
 
 
 /// This printf statement only has partial functionality

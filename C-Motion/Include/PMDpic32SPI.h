@@ -1,8 +1,10 @@
+
+
 #ifndef PMD_SPI
 #define PMD_SPI
-//#include "NI\ni845x.h"
-//#include "NI\Ni845x.h"
 #include "PMDsys.h"
+#include "PMDtypes.h"
+#include "PMDdevice.h"
 
 #define uInt8 char
 #define uInt16 short
@@ -11,53 +13,74 @@
 #define WORD short
 #define DWORD int
 #define BYTE char
-typedef char            int8;
+//typedef char int8;
 
+
+// specify the PIC ports being using for SPI
+
+// Setup for Curiosity PIC32
+// RD4 SPI Enable 0
+// RA9 SPI Status 0
+// RPD3 MOSI
+// RPD14 MISO
+// RPD1 SPI CLK
+
+// Device #1 
+#define SPI_ENB_0 PORTD
+#define SPI_ENB_MSK_0 0x0010
+#define ANSEL_ENB_0 ANSELD
+#define TRIS_ENB_0 TRISD
+
+
+#define ANSEL_STAT_0 ANSELA
+#define SPI_STAT_0  PORTA
+#define SPI_STAT_MSK_0 0x0200
+
+#define ANSEL_SDO1_0 ANSELD
+#define TRIS_SDO1_0 TRISD
+#define SDO1_MSK 0x0008
+#define SDO1_REG RPD3R
+
+#define SDI1_MSK 0x4000
+#define ANSEL_SDI1 ANSELD
+
+
+//RA1 SPI Enable 1
+//RA5 SPI Status 1
+#define SPI_ENB_1 PORTA
+#define SPI_ENB_MSK_1 0x0002
+#define ANSEL_ENB_1 ANSELA
+#define TRIS_ENB_1 TRISA
+
+
+#define ANSEL_STAT_1 ANSELA
+#define SPI_STAT_1  PORTA
+#define SPI_STAT_MSK_1 0x0020
 
 
 typedef struct tag_PMDSPI_IOData {
     HANDLE m_Handle;
- //   NiHandle ConfigurationHandle;
-//    NiHandle DeviceHandle;
- //   NiHandle ScriptHandle;
-
     short NumBitsPerSample;
     int  ClockPhase;
     int  ClockPhaseRead;
     int  ClockPolarity;
-
-    /* supported NI clock rates: (MC58113 supports up to 10MHz)
-
-       25 kHz,   32 kHz,  40 kHz,  50 kHz,  80 kHz, 100 kHz, 125 kHz,
-       160 kHz, 200 kHz, 250 kHz, 400 kHz, 500 kHz, 625 kHz, 800 kHz,
-       1 MHz,  1.25 MHz, 2.5 MHz, 3.125 MHz, 4 MHz, 5 MHz, 6.25 MHz,
-       10 MHz, 12.5 MHz, 20 MHz, 25 MHz, 33.33 MHz, 50 MHz
-    */
     short ClockRate;
-
     int ChipSelect;
-
     BOOL m_bUseScript;
     long m_Timeout;
     PMDuint8 bVerbose;
-
     char     ResourceName[256];
 } PMDSPI_IOData;
 
 // functions that can be called externally
-void PMDSPI_InitData(PMDSPI_IOData* transport_data);
+void PMDSPI_InitData(PMDSPI_IOData* transport_data, int device);
 
 PMDresult PMDSPI_Init(PMDAxisHandle* axis_handle, int device);
 
 // call this function to initialize the interface
 PMDresult PMDSetupAxisInterface_SPI(PMDAxisHandle* axis_handle, PMDAxis axis_number, int device);
 
-// Write/read up to 4 words in a single SPICS pulse.
-//PMDresult PMDSPI_WriteWords(PMDAxisHandle* axis_handle,
- //                               PMDuint16 *WriteData, int nwords, PMDuint16 *ReadData);
-
 PMDresult PMDSPI_WriteWords(void* transport_data, PMDuint16 *WriteData, int nwords, PMDuint16 *ReadData);
-
 
 // Set new verbosity, return old verbosity.
 int PMDSPI_SetVerbose(void *transport_data, int level);

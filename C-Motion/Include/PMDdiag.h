@@ -11,7 +11,11 @@
 
 #define PMD_RESULT(_call)  {result = _call; if (result) PMDprintf("Error: %s, %30s at line: %d in file: %s\n", PMDGetErrorMessage(result), #_call, __LINE__, __FILE__);}
 
+//#define PMD_RESULT_NOPRINT(_call)  {result = _call; if (result) PMDprintf("Error: %s, %30s at line: %d in file: %s\n", PMDGetErrorMessage(result), #_call, __LINE__, __FILE__);}
+
 #define PMD_ABORTONERROR(_call)  PMD_RESULT(_call) if (result) PMDTaskAbort(result);
+
+#define PMD_BREAKONERROR(_call)  {result = _call; if (result) break;}
 
 #if defined(__cplusplus)
 extern "C" {
